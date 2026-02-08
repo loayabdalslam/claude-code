@@ -12,7 +12,7 @@ from transformers import (
     logging,
 )
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
-from trl import SFTTrainer
+from trl import SFTTrainer, SFTConfig
 from tqdm import tqdm
 
 def main():
@@ -31,7 +31,11 @@ def main():
     args = parser.parse_args()
 
     print(f"--- Loading Dataset: {args.dataset_name} ---")
-    dataset = load_dataset(args.dataset_name, split="train")
+    if os.path.isdir(args.dataset_name):
+        from datasets import load_from_disk
+        dataset = load_from_disk(args.dataset_name)
+    else:
+        dataset = load_dataset(args.dataset_name, split="train")
 
     # Quantization configuration
     bnb_config = BitsAndBytesConfig(
@@ -57,13 +61,28 @@ def main():
     tokenizer.padding_side = "right"
 
     # PEFT configuration
+    # Automatically find target modules if not specified (works for most architectures)
+    def find_all_linear_names(model):
+        cls = torch.nn.Linear
+        lora_module_names = set()
+        for name, module in model.named_modules():
+            if isinstance(module, cls):
+                names = name.split(".")
+                lora_module_names.add(names[-1])
+        if "lm_head" in lora_module_names:  # needed for 16nd
+            lora_module_names.remove("lm_head")
+        return list(lora_module_names)
+
+    target_modules = find_all_linear_names(model)
+    print(f"--- Detected Target Modules: {target_modules} ---")
+
     peft_config = LoraConfig(
         lora_alpha=16,
         lora_dropout=0.1,
         r=64,
         bias="none",
         task_type="CAUSAL_LM",
-        target_modules=["q_proj", "v_proj", "k_proj", "o_proj", "gate_proj", "up_proj", "down_proj"] # Common for Llama/Gemma
+        target_modules=target_modules
     )
 
     model = prepare_model_for_kbit_training(model)
@@ -71,40 +90,43 @@ def main():
     model.print_trainable_parameters()
 
     print(f"--- Training Configuration ---")
-    training_arguments = TrainingArguments(
+
+    # Device-specific settings
+    has_cuda = torch.cuda.is_available()
+    print(f"--- CUDA Available: {has_cuda} ---")
+
+    training_arguments = SFTConfig(
         output_dir=args.output_dir,
         num_train_epochs=args.num_epochs,
         per_device_train_batch_size=args.batch_size,
         gradient_accumulation_steps=1,
-        optim="paged_adamw_32bit",
+        optim="paged_adamw_32bit" if has_cuda else "adamw_torch",
         save_steps=25,
         logging_steps=1, # Real-time logging
         learning_rate=args.learning_rate,
         weight_decay=0.001,
-        fp16=True,
+        fp16=has_cuda,
         bf16=False,
         max_grad_norm=0.3,
         max_steps=-1,
-        warmup_ratio=0.03,
+        warmup_steps=10,
         group_by_length=True,
         lr_scheduler_type="constant",
-        report_to="tensorboard",
-        logging_dir=f"{args.output_dir}/logs",
+        report_to="none", # Disabled tensorboard to avoid environment issues
         push_to_hub=args.push_to_hub,
         hub_token=args.hf_token,
         hub_model_id=args.repo_id if args.repo_id else None,
-        disable_tqdm=False # Ensure tqdm is active
+        disable_tqdm=False, # Ensure tqdm is active
+        dataset_text_field=args.dataset_text_field,
+        max_length=512,
+        packing=False
     )
 
     trainer = SFTTrainer(
         model=model,
         train_dataset=dataset,
-        peft_config=peft_config,
-        dataset_text_field=args.dataset_text_field,
-        max_seq_length=512,
-        tokenizer=tokenizer,
+        processing_class=tokenizer,
         args=training_arguments,
-        packing=False,
     )
 
     print(f"--- Starting Training ---")

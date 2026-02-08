@@ -7,7 +7,7 @@ def validate_dataset(dataset_id):
     api = HfApi()
     try:
         info = api.dataset_info(dataset_id)
-        print(f"✅ Dataset found: {dataset_id}")
+        print(f"[SUCCESS] Dataset found: {dataset_id}")
         print(f"--- Details ---")
         print(f"Downloads: {info.downloads}")
         print(f"Likes: {info.likes}")
@@ -20,21 +20,21 @@ def validate_dataset(dataset_id):
             pass
         return True
     except Exception as e:
-        print(f"❌ Dataset not found or inaccessible: {dataset_id}")
+        print(f"[ERROR] Dataset not found or inaccessible: {dataset_id}")
         return False
 
 def validate_model(model_id):
     api = HfApi()
     try:
         info = api.model_info(model_id)
-        print(f"✅ Model found: {model_id}")
+        print(f"[SUCCESS] Model found: {model_id}")
         print(f"--- Details ---")
         print(f"Downloads: {info.downloads}")
         print(f"Likes: {info.likes}")
         print(f"Pipeline: {info.pipeline_tag}")
         return True
     except Exception as e:
-        print(f"❌ Model not found or inaccessible: {model_id}")
+        print(f"[ERROR] Model not found or inaccessible: {model_id}")
         return False
 
 def search_datasets(query, limit=5):
