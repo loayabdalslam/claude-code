@@ -1,0 +1,13 @@
+{
+  "name": "Claude Code Plugins Marketplace",
+  "description": "A collection of high-performance plugins for Claude Code",
+  "plugins": [
+    {
+      "id": "finetune",
+      "name": "Finetune",
+      "version": "1.0.0",
+      "description": "Professional workflow for fine-tuning Hugging Face models",
+      "path": "plugins/finetune"
+    }
+  ]
+}
