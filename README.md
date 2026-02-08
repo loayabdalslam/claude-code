@@ -1,72 +1,40 @@
-# Claude Code
+# Claude Code Plugins Marketplace
 
-![](https://img.shields.io/badge/Node.js-18%2B-brightgreen?style=flat-square) [![npm]](https://www.npmjs.com/package/@anthropic-ai/claude-code)
+Welcome to the official marketplace for Claude Code plugins. This repository serves as a hub for specialized tools and agents that extend the capabilities of Claude Code.
 
-[npm]: https://img.shields.io/npm/v/@anthropic-ai/claude-code.svg?style=flat-square
+## 🚀 Featured Plugin: Finetune
 
-Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows -- all through natural language commands. Use it in your terminal, IDE, or tag @claude on Github.
+The **Finetune** plugin is a professional-grade workflow for fine-tuning Large Language Models (LLMs) on Hugging Face datasets.
 
-**Learn more in the [official documentation](https://code.claude.com/docs/en/overview)**.
+### Key Features:
+- **Zero-Config PEFT**: Automatically detects model architectures for LoRA.
+- **Real-time Monitoring**: Live TQDM progress bars and metric logging in your terminal.
+- **Secure Integration**: Guided Hugging Face Hub uploads with secure token handling.
+- **Data Engineering**: Built-in cleaning, formatting, and "Golden Subset" generation.
 
-<img src="./demo.gif" />
+## 📦 How to Install Plugins
 
-## Get started
-> [!NOTE]
-> Installation via npm is deprecated. Use one of the recommended methods below.
+1. **Clone the Marketplace**:
+   ```bash
+   git clone https://github.com/loaiabdalslam/claude-code-plugins.git
+   ```
 
-For more installation options, uninstall steps, and troubleshooting, see the [setup documentation](https://code.claude.com/docs/en/setup).
+2. **Install Dependencies**:
+   Navigate to the specific plugin directory and install the requirements:
+   ```bash
+   pip install -r plugins/finetune/requirements.txt
+   ```
 
-1. Install Claude Code:
+3. **Run Claude Code**:
+   Simply run `claude` in the root directory. Claude will automatically detect the plugins in the `plugins/` folder.
 
-    **MacOS/Linux (Recommended):**
-    ```bash
-    curl -fsSL https://claude.ai/install.sh | bash
-    ```
+## 🛠️ Usage
 
-    **Homebrew (MacOS/Linux):**
-    ```bash
-    brew install --cask claude-code
-    ```
+Invoke the featured plugin using its slash command:
 
-    **Windows (Recommended):**
-    ```powershell
-    irm https://claude.ai/install.ps1 | iex
-    ```
+```text
+/finetune "Fine-tune Gemma-2b on Wikipedia"
+```
 
-    **WinGet (Windows):**
-    ```powershell
-    winget install Anthropic.ClaudeCode
-    ```
-
-    **NPM (Deprecated):**
-    ```bash
-    npm install -g @anthropic-ai/claude-code
-    ```
-
-2. Navigate to your project directory and run `claude`.
-
-## Plugins
-
-This repository includes several Claude Code plugins that extend functionality with custom commands and agents. See the [plugins directory](./plugins/README.md) for detailed documentation on available plugins.
-
-## Reporting Bugs
-
-We welcome your feedback. Use the `/bug` command to report issues directly within Claude Code, or file a [GitHub issue](https://github.com/anthropics/claude-code/issues).
-
-## Connect on Discord
-
-Join the [Claude Developers Discord](https://anthropic.com/discord) to connect with other developers using Claude Code. Get help, share feedback, and discuss your projects with the community.
-
-## Data collection, usage, and retention
-
-When you use Claude Code, we collect feedback, which includes usage data (such as code acceptance or rejections), associated conversation data, and user feedback submitted via the `/bug` command.
-
-### How we use your data
-
-See our [data usage policies](https://code.claude.com/docs/en/data-usage).
-
-### Privacy safeguards
-
-We have implemented several safeguards to protect your data, including limited retention periods for sensitive information, restricted access to user session data, and clear policies against using feedback for model training.
-
-For full details, please review our [Commercial Terms of Service](https://www.anthropic.com/legal/commercial-terms) and [Privacy Policy](https://www.anthropic.com/legal/privacy).
+---
+Built with ❤️ by **loaiabdalslam**

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: Implement interactive Hugging Face fine-tuning plugin\n\n- Added full fine-tuning workflow with real-time terminal updates\n- Implemented model/dataset validation and search on HF Hub\n- Created preprocessing script for data cleaning and golden subset creation\n- Developed QLoRA training script with TQDM progress bars\n- Added finetune-expert agent for ML optimization\n\nCo-Authored-By: loaiabdalslam <loaiabdalslam@Gmail.com>\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(pip install:*)",
+      "Bash(export:*)",
+      "Bash(pip show:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfix\\(finetune\\): Robust training script and hub validation fixes\n\n- Switched to SFTConfig for better TRL 0.27.2 compatibility\n- Implemented dynamic target module detection for LoRA\n- Added CPU/CUDA auto-detection for optimizer and precision\n- Fixed dataset loading for local disk-saved datasets\n- Resolved Unicode encoding issues in hub search results\n- Disabled TensorBoard to avoid environment-specific crashes\n\nCo-Authored-By: loaiabdalslam <loaiabdalslam@Gmail.com>\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+    ]
+  }
+}
