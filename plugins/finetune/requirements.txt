@@ -1,0 +1,13 @@
+torch
+transformers
+peft
+trl
+datasets
+bitsandbytes
+accelerate
+scipy
+pandas
+tqdm
+tensorboard
+huggingface_hub
+hf_transfer

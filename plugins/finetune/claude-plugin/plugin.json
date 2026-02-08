@@ -1,0 +1,9 @@
+{
+  "name": "finetune",
+  "version": "1.0.0",
+  "description": "Full workflow for fine-tuning Hugging Face models on any dataset",
+  "author": {
+    "name": "Loaii abdalslam",
+    "email": "loaiabdalslam@Gmail.com"
+  }
+}
